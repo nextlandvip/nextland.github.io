@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nextland — پیگیری پرونده</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p:#2D1B8E;--pd:#1A0F5C;--pl:#ECEAF8;--pm:#9B8FD4;--pink:#E91E8C;--pink-l:#FCE4F3;--t:#0F6E56;--tl:#E1F5EE;--tm:#9FE1CB;--g:#F5F4FC;--gm:#888780;--w:#fff;--bg:#F7F6FD;--b:#DDD9F5;--tx:#1A1040;--ts:#5F5E5A}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+.topbar{background:var(--pd);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-brand{color:#fff;font-size:17px;font-weight:700}
+.topbar-brand span{color:var(--pink);font-style:italic}
+.tbadge{color:#C8C0F0;font-size:12px;background:rgba(255,255,255,.1);padding:3px 10px;border-radius:20px}
+.cvwrap{max-width:520px;margin:0 auto;padding:20px 16px}
+.cvhead{background:linear-gradient(135deg,var(--pd) 0%,var(--p) 60%,#4A2BA8 100%);border-radius:16px;padding:22px;margin-bottom:16px;color:#fff;position:relative;overflow:hidden}
+.cvhead::before{content:'';position:absolute;top:-30px;left:-30px;width:120px;height:120px;background:var(--pink);opacity:.15;border-radius:50%}
+.cvhead::after{content:'✈';position:absolute;top:14px;left:18px;font-size:28px;opacity:.2}
+.cvbrand{font-size:11px;color:#C8C0F0;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase}
+.cvname{font-size:22px;font-weight:700}
+.cvcode{font-size:12px;color:#C8C0F0;margin-top:3px}
+.cvpct{font-size:34px;font-weight:700;margin-top:14px}
+.cvlbl{font-size:11px;color:#C8C0F0}
+.cvtrack{height:8px;background:rgba(255,255,255,.2);border-radius:20px;margin-top:8px;overflow:hidden}
+.cvfill{height:100%;background:var(--pink);border-radius:20px;transition:width .6s}
+.box{background:var(--w);border:1px solid var(--b);border-radius:14px;padding:16px 18px;margin-bottom:14px}
+.btitle{font-size:13px;font-weight:600;margin-bottom:14px;color:var(--p)}
+.srow{display:flex}
+.sline{display:flex;flex-direction:column;align-items:center;margin-left:12px}
+.sdot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;border:2px solid transparent;font-weight:700}
+.sdot.done{background:var(--t);color:#fff;border-color:var(--t)}
+.sdot.active{background:var(--pink);color:#fff;border-color:var(--pink);box-shadow:0 0 0 4px var(--pink-l)}
+.sdot.pending{background:var(--w);color:var(--gm);border-color:var(--b)}
+.sconn{width:2px;flex:1;min-height:14px;background:var(--b)}
+.sconn.done{background:var(--tm)}
+.sbody{flex:1;padding-bottom:16px;padding-top:4px}
+.str{display:flex;align-items:center;gap:7px;margin-bottom:2px;flex-wrap:wrap}
+.sttl{font-size:13px;font-weight:500}
+.sttl.done{color:var(--t)}
+.sttl.active{color:var(--p);font-weight:600}
+.sttl.pending{color:var(--ts)}
+.sbadge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500}
+.sbadge.done{background:var(--tl);color:var(--t)}
+.sbadge.active{background:var(--pink-l);color:var(--pink)}
+.sbadge.pending{background:var(--g);color:var(--gm)}
+.faq-btn{width:100%;padding:11px 14px;background:var(--pl);border:1.5px solid var(--pm);border-radius:10px;color:var(--p);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-align:right;display:flex;align-items:center;gap:8px;transition:all .15s}
+.faq-btn:hover{background:var(--p);color:#fff;border-color:var(--p)}
+.faq-list{margin-top:10px;display:none}
+.faq-list.open{display:block}
+.faq-item{background:var(--w);border:1px solid var(--b);border-radius:10px;margin-bottom:8px;overflow:hidden}
+.faq-q{padding:12px 14px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--p)}
+.faq-q:hover{background:var(--pl)}
+.faq-arrow{font-size:11px;transition:transform .2s;flex-shrink:0;color:var(--pink)}
+.faq-a{padding:0 14px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s}
+.faq-a.open{max-height:300px;padding:0 14px 12px}
+.faq-a p{font-size:13px;color:var(--ts);line-height:1.8}
+.contact-box{background:linear-gradient(135deg,var(--pink-l),var(--pl));border:1.5px solid var(--pm);border-radius:14px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+.contact-icon{width:44px;height:44px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.contact-label{font-size:11px;color:var(--ts);margin-bottom:3px}
+.contact-num{font-size:17px;font-weight:700;color:var(--p);direction:ltr;text-align:right;transition:opacity .2s}
+.contact-num:hover{opacity:.7}
+.contact-sub{font-size:11px;color:var(--ts);margin-top:2px}
+.lstate{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:12px;color:var(--ts)}
+.spin{width:32px;height:32px;border:3px solid var(--pl);border-top-color:var(--pink);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="topbar-brand">Next<span>land</span></div>
+  <div class="tbadge">پیگیری پرونده</div>
+</nav>
+<div class="cvwrap" id="content">
+  <div class="lstate"><div class="spin"></div><span>در حال بارگذاری...</span></div>
+</div>
+<script>
+var API = "https://script.google.com/macros/s/AKfycbzJMg3Ehx9WAKI6fO0CyemMv8LJ8tqYX9YnTxtWWtNG6pezvI1-723u7UGWvQTfKxqM/exec";
+var PHONE = "02122775943";
+var STEPS = [
+  "عقد قرارداد","تایید اولیه مدارک","تشکیل کارگروه تخصصی",
+  "تکمیل مدارک","تشکیل پرونده در اداره مهاجرت اسپانیا",
+  "سفر اول به اسپانیا","انجام امور اداری اسپانیا",
+  "بازگشت از سفر","صدور اقامت و کد ملی اسپانیایی"
+];
+var FAQ = {
+  1:[
+    {q:"چه مدارکی برای اخذ اقامت مورد نیاز است؟",a:"مدارک اصلی شامل هویتی (پاسپورت، شناسنامه)، مدارک مالی (گردش حساب ۳ ماهه)، مدارک شغلی (نامه اشتغال) و سند ازدواج است."},
+    {q:"آیا تمامی مدارک برای همراهان الزامی است؟",a:"خیر، مدارک اصلی برای همراهان صرفاً مدارک هویتی بوده و مدرک دیگری لازم نیست."},
+    {q:"گردش حساب باید چگونه باشد؟",a:"با توجه به شرایط فرد اقدام‌کننده و افراد همراه، این عدد توسط کارگروه اختصاصی به مشتری اعلام می‌گردد."}
+  ],
+  2:[
+    {q:"کارگروه تخصصی چیست؟",a:"کارگروه تخصصی تیمی متشکل از مدیر قرارداد، مدیر اختصاصی اجرا، نماینده دفتر اسپانیا و مدیر بخش فروش است که مسئول ثبت پرونده شما در اداره مهاجرت هستند."}
+  ],
+  3:[
+    {q:"در صورت داشتن نواقص چه می‌شود؟",a:"در صورت داشتن نواقص، با توجه به نوع نقص‌ها پرونده متوقف می‌شود تا بعد از تکمیل کامل مدارک روند ثبت پرونده انجام شود."},
+    {q:"آیا مدارک باید ترجمه رسمی شوند؟",a:"بله، بیشتر مدارک باید توسط مترجم رسمی به اسپانیایی ترجمه شوند و باید مهر دادگستری و مهر وزارت امور خارجه را داشته باشند."}
+  ],
+  4:[
+    {q:"تاییدیه مدارک به چه معناست؟",a:"پس از دریافت تمامی مدارک، مدارک برای تایید به وکیل اسپانیایی ارائه می‌شود تا با پایین آوردن احتمال ریسک، اقدام مطمئن شویم."},
+    {q:"تشکیل پرونده اقامتی چه طول می‌کشد؟",a:"پس از تایید وکیل، مدارک جهت تشکیل پرونده به اداره مهاجرت ارائه می‌شود و پس از یک هفته شما آماده سفر به اسپانیا هستید."}
+  ],
+  5:[
+    {q:"تا چه زمانی وقت دارم تا به اسپانیا سفر کنم؟",a:"پس از ثبت پرونده در اداره مهاجرت، به مدت ۶۰ روز حضور شما در خاک اسپانیا الزامی می‌باشد."},
+    {q:"در سفر اول به اسپانیا چه کارهایی باید انجام داد؟",a:"در سفر اول امور اداری ضروری انجام می‌پذیرد و حضور شما در دفتر اداره مهاجرت الزامی است. همکاران ما در اسپانیا همراه شما هستند."},
+    {q:"پس از بازگشت از سفر اول چقدر زمان لازم است؟",a:"پس از حضور در خاک اسپانیا، حدود ۳۰ روز کاری زمان می‌برد تا نامه تایید اقامت صادر شود."},
+    {q:"می‌توانم در همان سفر اول در اسپانیا بمانم؟",a:"بله، در صورتی که ویزای توریستی اجازه دهد مشکلی نیست. حضور فیزیکی دائم الزامی نمی‌باشد."}
+  ]
+};
+
+function init() {
+  var params = new URLSearchParams(location.search);
+  var track = params.get('track');
+  if (!track) {
+    document.getElementById('content').innerHTML = '<div class="lstate"><div style="font-size:44px;opacity:.2">📋</div><p>لینک اختصاصی شما معتبر نیست.</p></div>';
+    return;
+  }
+  fetch(API + '?action=getOne&id=' + track)
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (res.success) render(res.client);
+      else document.getElementById('content').innerHTML = '<div class="lstate"><div style="font-size:44px;opacity:.2">⚠️</div><p>پرونده یافت نشد.</p></div>';
+    })
+    .catch(function(){
+      document.getElementById('content').innerHTML = '<div class="lstate"><div style="font-size:44px;opacity:.2">⚠️</div><p>خطا در اتصال.</p></div>';
+    });
+}
+
+function render(c) {
+  var step = parseInt(c.activeStep), p = Math.round(((step+1)/STEPS.length)*100);
+  var steps = '';
+  STEPS.forEach(function(s,i){
+    var st = i<step?'done':i===step?'active':'pending';
+    var isLast = i===STEPS.length-1;
+    steps += '<div class="srow"><div class="sline"><div class="sdot '+st+'">'+(st==='done'?'✓':i+1)+'</div>';
+    if(!isLast) steps += '<div class="sconn'+(st==='done'?' done':'')+'"></div>';
+    steps += '</div><div class="sbody"><div class="str"><span class="sttl '+st+'">'+s+'</span>';
+    steps += '<span class="sbadge '+st+'">'+(st==='done'?'✓ انجام شد':st==='active'?'● فعال':'در انتظار')+'</span></div></div></div>';
+  });
+
+  var faqs = FAQ[step] || [];
+  var faqHtml = '';
+  if (faqs.length > 0) {
+    faqHtml = '<div class="box"><div class="btitle">❓ سوالات متداول این مرحله</div>'
+      +'<button class="faq-btn" onclick="toggleFaq(this)"><span>💬</span> مشاهده سوالات</button>'
+      +'<div class="faq-list" id="faq-list">';
+    faqs.forEach(function(f){
+      faqHtml += '<div class="faq-item"><div class="faq-q" onclick="toggleItem(this)">'+f.q+'<span class="faq-arrow">▼</span></div>'
+        +'<div class="faq-a"><p>'+f.a+'</p></div></div>';
+    });
+    faqHtml += '</div></div>';
+  }
+
+  document.getElementById('content').innerHTML =
+    '<div class="cvhead">'
+    +'<div class="cvbrand">NEXTLAND — NOMAD VISA SPAIN</div>'
+    +'<div class="cvname">'+c.name+'</div>'
+    +'<div class="cvcode">کد پرونده: '+c.id+'</div>'
+    +'<div class="cvpct">'+p+'٪</div>'
+    +'<div class="cvlbl">پیشرفت پرونده شما</div>'
+    +'<div class="cvtrack"><div class="cvfill" style="width:'+p+'%"></div></div>'
+    +'</div>'
+    +'<div class="box"><div class="btitle">📋 وضعیت پرونده</div>'+steps+'</div>'
+    + faqHtml
+    +'<a href="tel:'+PHONE+'" style="text-decoration:none">'
+    +'<div class="contact-box">'
+    +'<div class="contact-icon">📞</div>'
+    +'<div><div class="contact-label">برای سوال و پیگیری تماس بگیرید</div>'
+    +'<div class="contact-num">'+PHONE+'</div>'
+    +'<div class="contact-sub">تیم پشتیبانی Nextland</div></div>'
+    +'</div></a>';
+}
+
+function toggleFaq(btn) {
+  var list = document.getElementById('faq-list');
+  list.classList.toggle('open');
+  btn.querySelector('span').textContent = list.classList.contains('open') ? '✕' : '💬';
+  btn.style.background = list.classList.contains('open') ? 'var(--p)' : '';
+  btn.style.color = list.classList.contains('open') ? '#fff' : '';
+}
+
+function toggleItem(el) {
+  var ans = el.nextElementSibling;
+  var arrow = el.querySelector('.faq-arrow');
+  ans.classList.toggle('open');
+  arrow.style.transform = ans.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+init();
+</script>
+</body>
+</html>
