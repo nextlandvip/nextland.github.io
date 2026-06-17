@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nextland — پنل ادمین</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--p:#2D1B8E;--pd:#1A0F5C;--pl:#ECEAF8;--pm:#9B8FD4;--pink:#E91E8C;--pink-l:#FCE4F3;--t:#0F6E56;--tl:#E1F5EE;--tm:#9FE1CB;--g:#F5F4FC;--gm:#888780;--w:#fff;--bg:#F7F6FD;--b:#DDD9F5;--tx:#1A1040;--ts:#5F5E5A}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+.topbar{background:var(--pd);padding:13px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-brand{color:#fff;font-size:17px;font-weight:700}
+.topbar-brand span{color:var(--pink);font-style:italic}
+.tbadge{color:#C8C0F0;font-size:12px;background:rgba(255,255,255,.1);padding:3px 10px;border-radius:20px}
+.layout{display:grid;grid-template-columns:290px 1fr;min-height:calc(100vh - 48px)}
+.sidebar{background:var(--w);border-left:1px solid var(--b);display:flex;flex-direction:column}
+.sh{padding:14px;border-bottom:1px solid var(--b)}
+.sh h2{font-size:11px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.sinput{width:100%;padding:8px 12px;border:1px solid var(--b);border-radius:8px;font-family:inherit;font-size:13px;background:var(--bg);outline:none;margin-bottom:8px;color:var(--tx)}
+.sinput:focus{border-color:var(--p)}
+.abtn{width:100%;padding:10px;background:var(--pink);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .2s}
+.abtn:hover{opacity:.88}
+.clist{flex:1;overflow-y:auto;padding:8px}
+.ccard{padding:11px 12px;border-radius:10px;cursor:pointer;margin-bottom:3px;border:1.5px solid transparent;transition:all .15s}
+.ccard:hover{background:var(--g)}
+.ccard.sel{background:var(--pl);border-color:var(--pm)}
+.crow{display:flex;align-items:center;gap:10px}
+.cav{width:34px;height:34px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.cav.done{background:var(--t)}
+.cname{font-size:13px;font-weight:500}
+.csub{font-size:11px;color:var(--ts);margin-top:2px}
+.cbar{height:3px;background:var(--b);border-radius:10px;margin-top:7px;overflow:hidden}
+.cfill{height:100%;background:var(--pink);border-radius:10px}
+.main{padding:24px 28px;overflow-y:auto}
+.estate{display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;color:var(--ts);gap:10px}
+.lstate{display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:12px;color:var(--ts)}
+.spin{width:30px;height:30px;border:3px solid var(--pl);border-top-color:var(--pink);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.chl{display:flex;align-items:center;gap:14px}
+.chav{width:50px;height:50px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600}
+.chname{font-size:18px;font-weight:600}
+.chmeta{font-size:12px;color:var(--ts);margin-top:4px}
+.chbtns{display:flex;gap:7px;flex-wrap:wrap}
+.btn{padding:7px 13px;border-radius:8px;font-family:inherit;font-size:12px;cursor:pointer;border:1px solid var(--b);background:var(--w);color:var(--tx);transition:all .15s}
+.btn:hover{background:var(--g)}
+.btn.pri{background:var(--pink);color:#fff;border-color:var(--pink)}
+.btn.pri:hover{opacity:.88}
+.btn.sec{background:var(--p);color:#fff;border-color:var(--p)}
+.btn.sec:hover{opacity:.88}
+.btn.dan{border-color:#F09595;color:#A32D2D}
+.btn.dan:hover{background:#FCEBEB}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--w);border:1px solid var(--b);border-radius:10px;padding:12px 14px}
+.stat.hi{background:var(--pink-l);border-color:var(--pink)}
+.slbl{font-size:11px;color:var(--ts);margin-bottom:4px}
+.sval{font-size:20px;font-weight:600}
+.stat.hi .sval{color:var(--pink)}
+.box{background:var(--w);border:1px solid var(--b);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.btitle{font-size:13px;font-weight:600;margin-bottom:12px;color:var(--p)}
+.prog-row{display:flex;justify-content:space-between;margin-bottom:8px}
+.prog-lbl{font-size:13px;font-weight:500}
+.prog-pct{font-size:13px;font-weight:600;color:var(--pink)}
+.prog-track{height:10px;background:var(--g);border-radius:20px;overflow:hidden}
+.prog-fill{height:100%;background:var(--pink);border-radius:20px;transition:width .5s}
+.srow{display:flex}
+.sline{display:flex;flex-direction:column;align-items:center;margin-left:12px}
+.sdot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;border:2px solid transparent;font-weight:600}
+.sdot.done{background:var(--t);color:#fff;border-color:var(--t)}
+.sdot.active{background:var(--pink);color:#fff;border-color:var(--pink);box-shadow:0 0 0 4px var(--pink-l)}
+.sdot.pending{background:var(--w);color:var(--gm);border-color:var(--b)}
+.sconn{width:2px;flex:1;min-height:14px;background:var(--b)}
+.sconn.done{background:var(--tm)}
+.sbody{flex:1;padding-bottom:16px;padding-top:4px}
+.str{display:flex;align-items:center;gap:7px;margin-bottom:2px;flex-wrap:wrap}
+.sttl{font-size:13px;font-weight:500}
+.sttl.done{color:var(--t)}
+.sttl.active{color:var(--p);font-weight:600}
+.sttl.pending{color:var(--ts)}
+.sbadge{font-size:10px;padding:2px 7px;border-radius:20px}
+.sbadge.done{background:var(--tl);color:var(--t)}
+.sbadge.active{background:var(--pink-l);color:var(--pink)}
+.sbadge.pending{background:var(--g);color:var(--gm)}
+.advbtn{margin-top:5px;padding:4px 11px;border-radius:6px;font-family:inherit;font-size:11px;cursor:pointer;border:1px solid var(--pink);background:var(--pink-l);color:var(--pink)}
+.advbtn:hover{background:var(--pink);color:#fff}
+.link-box{display:flex;align-items:center;gap:8px;background:var(--pl);border-radius:8px;padding:10px 14px;margin-bottom:10px}
+.link-url{font-size:12px;color:var(--p);flex:1;font-family:monospace;word-break:break-all}
+.clbtn{padding:5px 11px;background:var(--p);color:#fff;border:none;border-radius:6px;font-family:inherit;font-size:12px;cursor:pointer;white-space:nowrap}
+.sms-box{background:var(--bg);border:1px solid var(--b);border-radius:8px;padding:12px;font-size:13px;line-height:1.8;white-space:pre-wrap;margin-bottom:10px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--w);border-radius:14px;padding:24px;width:390px;max-width:95vw;max-height:90vh;overflow-y:auto}
+.modal h2{font-size:15px;font-weight:600;margin-bottom:16px;color:var(--p)}
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:12px;font-weight:500;color:var(--ts);margin-bottom:4px}
+.fg input,.fg select{width:100%;padding:9px 12px;border:1px solid var(--b);border-radius:8px;font-family:inherit;font-size:14px;background:var(--bg);color:var(--tx);outline:none}
+.fg input:focus,.fg select:focus{border-color:var(--p)}
+.macts{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.mcancel{padding:8px 16px;border:1px solid var(--b);border-radius:8px;background:var(--w);font-family:inherit;font-size:13px;cursor:pointer}
+.msave{padding:8px 16px;background:var(--pink);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--pd);color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;opacity:0;transition:all .3s;z-index:400;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{max-height:220px}.main{padding:14px}.stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="topbar-brand">Next<span>land</span></div>
+  <div class="tbadge">پنل مدیریت</div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sh">
+      <h2>پرونده‌ها</h2>
+      <input class="sinput" type="text" placeholder="جستجو..." id="search" oninput="renderSidebar()">
+      <button class="abtn" onclick="openAdd()">+ مشتری جدید</button>
+    </div>
+    <div class="clist" id="clist"></div>
+  </aside>
+  <main class="main" id="main">
+    <div class="lstate"><div class="spin"></div><span>در حال بارگذاری...</span></div>
+  </main>
+</div>
+
+<div class="overlay" id="modal">
+  <div class="modal">
+    <h2 id="mtitle">افزودن مشتری</h2>
+    <div class="fg"><label>نام کامل *</label><input id="fn" placeholder="علی محمدی"></div>
+    <div class="fg"><label>موبایل</label><input id="fp" placeholder="09..."></div>
+    <div class="fg"><label>تاریخ شروع</label><input id="fd" placeholder="۱۰ خرداد ۱۴۰۵"></div>
+    <div class="fg"><label>مرحله فعلی</label>
+      <select id="fs">
+        <option value="0">۱. عقد قرارداد</option>
+        <option value="1">۲. تایید اولیه مدارک</option>
+        <option value="2">۳. تشکیل کارگروه تخصصی</option>
+        <option value="3">۴. تکمیل مدارک</option>
+        <option value="4">۵. تشکیل پرونده در اداره مهاجرت</option>
+        <option value="5">۶. سفر اول به اسپانیا</option>
+        <option value="6">۷. انجام امور اداری اسپانیا</option>
+        <option value="7">۸. بازگشت از سفر</option>
+        <option value="8">۹. صدور اقامت و کد ملی</option>
+      </select>
+    </div>
+    <div class="fg"><label>یادداشت</label><input id="fno" placeholder="اختیاری"></div>
+    <div class="macts">
+      <button class="mcancel" onclick="closeModal()">انصراف</button>
+      <button class="msave" onclick="saveClient()">ذخیره</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+var API = "https://script.google.com/macros/s/AKfycbwLYLx6lNbYhuilKpCC2WdX_VSA3Wx6tRpOBQfr2sirsABmBdiaw0ZeLDe3ScNH9lM/exec";
+var SITE = "https://nextlandvip.github.io/nextland.github.io";
+var PHONE = "02122775943";
+var STEPS = [
+  "عقد قرارداد","تایید اولیه مدارک","تشکیل کارگروه تخصصی",
+  "تکمیل مدارک","تشکیل پرونده در اداره مهاجرت اسپانیا",
+  "سفر اول به اسپانیا","انجام امور اداری اسپانیا",
+  "بازگشت از سفر","صدور اقامت و کد ملی اسپانیایی"
+];
+var SMS = [
+  "سلام {n} عزیز 🙏\nقرارداد شما با Nextland ثبت شد.\nکد پرونده: {c}\n\n📋 پیگیری پرونده:\n{link}\n\nهر سوالی داشتید:\n☎️ " + PHONE + "\n— Nextland",
+  "سلام {n} جان 👋\nمدارک اولیه تایید شد.\n\n📋 {link}\n— Nextland",
+  "سلام {n} 🎯\nپرونده وارد کارگروه تخصصی شد.\n\n📋 {link}\n— Nextland",
+  "سلام {n} 📋\nنوبت تکمیل مدارک رسیده.\n\n📋 {link}\n— Nextland",
+  "سلام {n} 📁\nپرونده در اداره مهاجرت اسپانیا تشکیل شد!\n\n📋 {link}\n— Nextland",
+  "سلام {n} ✈️\nوقت سفر اول به اسپانیا رسید! سفر خوش 🙏\n\n📋 {link}\n— Nextland",
+  "سلام {n} 🏛️\nامور اداری اسپانیا شروع شده.\n\n📋 {link}\n— Nextland",
+  "سلام {n} 🏠\nخوش برگشتی! پرونده در مرحله نهاییه.\n\n📋 {link}\n— Nextland",
+  "سلام {n} 🎉\nتبریک! اقامت اسپانیا صادر شد ❤️\n\n📋 {link}\n— Nextland"
+];
+
+var clients = [], selId = null, editId = null;
+
+function apiCall(params, cb) {
+  var url = API + '?';
+  var parts = [];
+  for (var k in params) parts.push(k + '=' + encodeURIComponent(params[k]));
+  url += parts.join('&');
+  fetch(url)
+    .then(function(r){ return r.json(); })
+    .then(function(data){ cb(data); })
+    .catch(function(e){ cb({success:false, error:e.toString()}); });
+}
+
+function init() {
+  apiCall({action:'getAll'}, function(res) {
+    if (res.success) {
+      clients = (res.clients||[]).map(function(c){ c.activeStep=parseInt(c.activeStep)||0; return c; });
+      renderSidebar();
+      document.getElementById('main').innerHTML = '<div class="estate"><div style="font-size:44px;opacity:.2">📋</div><p>یک مشتری انتخاب کنید</p></div>';
+    } else {
+      document.getElementById('main').innerHTML = '<div class="estate"><div style="font-size:36px;opacity:.3">⚠️</div><p>' + (res.error||'خطای اتصال') + '</p></div>';
+    }
+  });
+}
+
+function ini(n){ return n.trim().charAt(0); }
+function pct(c){ return Math.round(((parseInt(c.activeStep)+1)/STEPS.length)*100); }
+
+function renderSidebar() {
+  var q = document.getElementById('search').value;
+  var f = clients.filter(function(c){ return c.name.indexOf(q)>=0; });
+  if (!f.length) { document.getElementById('clist').innerHTML='<div style="padding:16px;text-align:center;font-size:13px;color:var(--ts)">موردی یافت نشد</div>'; return; }
+  document.getElementById('clist').innerHTML = f.map(function(c){
+    var p = pct(c);
+    return '<div class="ccard '+(c.id===selId?'sel':'')+'" onclick="selClient(\''+c.id+'\')">'
+      +'<div class="crow"><div class="cav '+(parseInt(c.activeStep)===8?'done':'')+'">'+ ini(c.name) +'</div>'
+      +'<div style="flex:1;min-width:0"><div class="cname">'+c.name+'</div><div class="csub">'+STEPS[parseInt(c.activeStep)]+'</div></div>'
+      +'<div style="font-size:11px;color:var(--pink);font-weight:600">'+p+'%</div></div>'
+      +'<div class="cbar"><div class="cfill" style="width:'+p+'%"></div></div></div>';
+  }).join('');
+}
+
+function selClient(id) {
+  selId = id;
+  renderSidebar();
+  renderMain(clients.filter(function(c){ return c.id===id; })[0]);
+}
+
+function renderMain(c) {
+  var step = parseInt(c.activeStep), p = pct(c);
+  var steps = '';
+  STEPS.forEach(function(s,i){
+    var st = i<step?'done':i===step?'active':'pending';
+    var isLast = i===STEPS.length-1;
+    var adv = (st==='active'&&step<STEPS.length-1)?'<button class="advbtn" onclick="advance(\''+c.id+'\')">تکمیل ←</button>':'';
+    steps += '<div class="srow"><div class="sline"><div class="sdot '+st+'">'+(st==='done'?'✓':i+1)+'</div>';
+    if(!isLast) steps += '<div class="sconn'+(st==='done'?' done':'')+'"></div>';
+    steps += '</div><div class="sbody"><div class="str"><span class="sttl '+st+'">'+s+'</span><span class="sbadge '+st+'">'+(st==='done'?'✓':st==='active'?'فعال':'انتظار')+'</span></div>'+adv+'</div></div>';
+  });
+  var trackUrl = SITE + '?track=' + c.id;
+  var smsText = SMS[step].replace(/{n}/g,c.name.split(' ')[0]).replace(/{c}/g,c.id).replace(/{link}/g,trackUrl);
+  document.getElementById('main').innerHTML =
+    '<div class="ch"><div class="chl"><div class="chav">'+ini(c.name)+'</div>'
+    +'<div><div class="chname">'+c.name+'</div><div class="chmeta">کد: '+c.id+' | '+c.startDate+' | '+c.phone+(c.note?' | '+c.note:'')+'</div></div></div>'
+    +'<div class="chbtns">'
+    +'<button class="btn" onclick="openEdit(\''+c.id+'\')">✏️ ویرایش</button>'
+    +'<button class="btn dan" onclick="delClient(\''+c.id+'\')">🗑 حذف</button>'
+    +'<button class="btn pri" onclick="advance(\''+c.id+'\')">مرحله بعد ←</button>'
+    +'</div></div>'
+    +'<div class="stats">'
+    +'<div class="stat hi"><div class="slbl">پیشرفت</div><div class="sval">'+p+'%</div></div>'
+    +'<div class="stat"><div class="slbl">تکمیل شده</div><div class="sval">'+step+' از '+STEPS.length+'</div></div>'
+    +'<div class="stat"><div class="slbl">باقیمانده</div><div class="sval">'+(STEPS.length-step-1)+'</div></div>'
+    +'</div>'
+    +'<div class="box"><div class="prog-row"><span class="prog-lbl">'+STEPS[step]+'</span><span class="prog-pct">'+p+'%</span></div>'
+    +'<div class="prog-track"><div class="prog-fill" style="width:'+p+'%"></div></div></div>'
+    +'<div class="box"><div class="btitle">مراحل پرونده</div>'+steps+'</div>'
+    +'<div class="box"><div class="btitle">💬 پیامک این مرحله</div>'
+    +'<div class="sms-box">'+smsText+'</div>'
+    +'<button class="btn sec" onclick="copyT(\''+smsText.replace(/'/g,"\'").replace(/\n/g,"\n")+'\')">📋 کپی پیامک</button></div>'
+    +'<div class="box"><div class="btitle">🔗 لینک اختصاصی مشتری</div>'
+    +'<div class="link-box"><span class="link-url">'+trackUrl+'</span>'
+    +'<button class="clbtn" onclick="copyT(\''+trackUrl+'\')">کپی</button></div></div>';
+}
+
+function advance(id) {
+  var c = clients.filter(function(x){ return x.id===id; })[0];
+  var step = parseInt(c.activeStep);
+  if (step>=STEPS.length-1){ toast('🎉 پرونده تکمیل شده!'); return; }
+  var ns = step+1;
+  toast('در حال ذخیره...');
+  apiCall({action:'update',id:id,step:ns}, function(res){
+    if (res.success){ c.activeStep=ns; renderSidebar(); renderMain(c); toast('✓ مرحله «'+STEPS[ns]+'» فعال شد'); }
+    else toast('خطا: '+(res.error||''));
+  });
+}
+
+function copyT(t) {
+  navigator.clipboard.writeText(t).then(function(){ toast('✓ کپی شد'); }).catch(function(){ toast('دستی کپی کن'); });
+}
+
+function delClient(id) {
+  if(!confirm('پرونده حذف شود؟')) return;
+  apiCall({action:'delete',id:id}, function(res){
+    if(res.success){ clients=clients.filter(function(c){ return c.id!==id; }); selId=null; renderSidebar(); document.getElementById('main').innerHTML='<div class="estate"><div style="font-size:44px;opacity:.2">📋</div><p>یک مشتری انتخاب کنید</p></div>'; toast('حذف شد'); }
+  });
+}
+
+function openAdd() {
+  editId=null;
+  document.getElementById('mtitle').textContent='افزودن مشتری';
+  ['fn','fp','fd','fno'].forEach(function(i){ document.getElementById(i).value=''; });
+  document.getElementById('fs').value='0';
+  document.getElementById('modal').classList.add('open');
+}
+
+function openEdit(id) {
+  var c = clients.filter(function(x){ return x.id===id; })[0];
+  editId=id;
+  document.getElementById('mtitle').textContent='ویرایش پرونده';
+  document.getElementById('fn').value=c.name;
+  document.getElementById('fp').value=c.phone;
+  document.getElementById('fd').value=c.startDate;
+  document.getElementById('fs').value=c.activeStep;
+  document.getElementById('fno').value=c.note||'';
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+
+function saveClient() {
+  var name=document.getElementById('fn').value.trim();
+  if(!name){ alert('نام را وارد کنید'); return; }
+  var phone=document.getElementById('fp').value.trim();
+  var date=document.getElementById('fd').value.trim();
+  var step=document.getElementById('fs').value;
+  var note=document.getElementById('fno').value.trim();
+  toast('در حال ذخیره...');
+  if(editId){
+    apiCall({action:'update',id:editId,step:step}, function(res){
+      if(res.success){
+        var c=clients.filter(function(x){ return x.id===editId; })[0];
+        c.name=name; c.phone=phone||'-'; c.startDate=date||'-'; c.activeStep=parseInt(step); c.note=note;
+        closeModal(); renderSidebar(); if(selId===editId) renderMain(c); toast('✓ ویرایش شد');
+      } else toast('خطا: '+(res.error||''));
+    });
+  } else {
+    apiCall({action:'add',name:name,phone:phone||'-',startDate:date||'-',step:step,note:note}, function(res){
+      if(res.success){
+        var nc={id:res.id,name:name,phone:phone||'-',startDate:date||'-',activeStep:parseInt(step),note:note};
+        clients.push(nc); closeModal(); renderSidebar(); selClient(res.id); toast('✓ مشتری اضافه شد');
+      } else toast('خطا: '+(res.error||''));
+    });
+  }
+}
+
+function toast(msg){
+  var el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); },2500);
+}
+
+init();
+</script>
+</body>
+</html>
